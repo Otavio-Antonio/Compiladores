@@ -1,0 +1,3 @@
+/home/otavio/Documentos/Compiladores-master/Labs/Lab10/Ast/Debug/CMakeFiles/tradutor.dir
+/home/otavio/Documentos/Compiladores-master/Labs/Lab10/Ast/Debug/CMakeFiles/edit_cache.dir
+/home/otavio/Documentos/Compiladores-master/Labs/Lab10/Ast/Debug/CMakeFiles/rebuild_cache.dir
