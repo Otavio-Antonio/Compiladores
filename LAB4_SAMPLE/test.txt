@@ -1,0 +1,7 @@
+while
+==
+!=
+_v_a_r_
+"Ola, mundo!"
+"Ola, \"mundo\"!"
+"Ola \\ mundo!"
