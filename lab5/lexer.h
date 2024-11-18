@@ -10,14 +10,9 @@ using std::stringstream;
 using std::unordered_map;
 using std::string;
 
-// cada token possui uma tag (número a partir de 256)
-// a tag de caracteres individuais é seu código ASCII
-//enum Tag { ID = 256, INTEGER, FLOATING, TYPE, TRUE, FALSE, MAIN, IF, WHILE, DO, OR, AND, EQ, NEQ, LTE, GTE };
-
 // classe para representar tokens
 struct Token
 {	
-	
 	int tag;
 	string lexeme;
 
@@ -30,13 +25,12 @@ struct Token
 class Lexer
 {
 private:
-
 	yyFlexLexer scanner;
 	int token_id;
 
 	char peek;			// último caractere lido
 	Token token;		// último token retornado
-	int line = 1;		// número da linha atual
+	int yylineno;		// número da linha atual
 
 	// tabela para identificadores e palavras-chave
 	unordered_map<string, Token> token_table;

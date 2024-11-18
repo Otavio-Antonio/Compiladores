@@ -1,4 +1,5 @@
- int main ()
+int main()
 {
-  int i\;
+  int i;
+  i = 2;
 }

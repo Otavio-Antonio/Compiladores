@@ -6,8 +6,6 @@ using namespace std;
 using std::stringstream;
 extern std::ifstream fin;
 
-int yylineno; // Linha atual do analisador léxico
-
 // construtor 
 Lexer::Lexer()
 {
@@ -22,33 +20,69 @@ Lexer::Lexer()
 	token_table["while"] = Token{ Tag::WHILE, "while" };
 	token_table["do"]    = Token{ Tag::DO,    "do" };
 	
-	// inicia leitura da entrada
-	//peek = fin.get();
+	// altera entrada para arquivo
+	scanner.switch_streams(&fin);  
 
 }
 
 // retorna número da linha atual
 int Lexer::Lineno()
 {	
-	return line;
+	//cout<<"linha atual"<<scanner.lineno();
+	return scanner.lineno();
 }
 // retorna tokens para o analisador sintático
 Token* Lexer::Scan()
 {    
-	scanner.switch_streams(&fin);  // altera entrada para arquivo
-    
-	token_id = scanner.yylex();
-	string lexema_atual = scanner.YYText();
+	const int token_id = scanner.yylex();
+	const char *lexema_atual = scanner.YYText();
 
-    if (token_id == 0){ // EOF
-		
-        token =  Token{EOF};
-		cout << token.tag<<"--------"<<token.lexeme<< endl;
-		return &token;
+	switch (token_id)
+	{
+		case ID: {
+			auto pos = token_table.find(lexema_atual);
+
+			if (pos != token_table.end()) {
+				token = pos->second; // Retorna o token existente
+			}else{
+				Token t {Tag::ID, lexema_atual}; // Cria novo token
+				token_table[lexema_atual] = t;  // Adiciona à tabela de símbolos
+				token = t; // Retorna o novo token
+			}
+			
+    	}
+		break;
+	case 0:
+		token =  Token{EOF};
+		break;
+
+	case INTEGER:
+		token = Token{Tag::INTEGER, lexema_atual};
+		break;
+	case FLOATING:
+		token = Token{Tag::FLOATING, lexema_atual};
+		break;
+	case AND:
+		token = Token{Tag::AND, lexema_atual};
+		break;
+	case OR:
+		token = Token{Tag::OR, lexema_atual};
+		break;
+	case EQ:
+		token = Token{Tag::EQ, lexema_atual};
+		break;
+	case NEQ:
+		token = Token{Tag::NEQ, lexema_atual};
+		break;
+	case GTE:
+		token = Token{Tag::GTE, lexema_atual};
+		break;
+	case LTE:
+		token = Token{Tag::LTE, lexema_atual};
+		break;
+	default:
+		token = Token{*lexema_atual};
+		break;
 	}
-
-    token = Token{token_id, lexema_atual}; // Cria o Token com base no token_id e lexema
-	cout<<token.tag<<" ------ "<<token.lexeme<<endl;
-
-    return &token;
+	return &token;
 }
